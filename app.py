@@ -83,8 +83,6 @@ def euros(montant):
 
 with st.sidebar:
     st.title("BELGALANE")
-    page = st.radio("Menu", ["Mes achats", "Mes banques", "Mon dashboard"],
-                    label_visibility="collapsed")
     st.divider()
     if MODE_DEMO:
         st.info("Mode démo : données du cahier des charges, aucune IA appelée.")
@@ -93,6 +91,11 @@ with st.sidebar:
     if MOT_DE_PASSE and st.button("Déconnexion"):
         st.session_state.clear()
         st.rerun()
+
+# Menu en haut de la page (et non plus dans la barre latérale),
+# pour qu'il reste visible sur téléphone.
+page = st.radio("Menu", ["Mes achats", "Mes banques", "Mon dashboard"],
+                horizontal=True, label_visibility="collapsed")
 
 # ---------- Mes achats ----------
 if page == "Mes achats":
