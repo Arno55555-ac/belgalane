@@ -90,11 +90,17 @@ def _nombre(valeur):
 def extraire_facture(cle, fichier):
     d = appeler_mistral(cle, CONSIGNES_FACTURE, lire_texte_pdf(fichier))
     type_depense = d.get("type_depense")
+    montant_ttc = _nombre(d.get("montant_ttc"))
+    montant_ht = _nombre(d.get("montant_ht"))
+    # Contrôle de cohérence : le HT ne peut jamais dépasser le TTC.
+    # Si c'est le cas, l'IA s'est trompée : on préfère laisser le HT vide.
+    if montant_ht is not None and montant_ttc is not None and montant_ht > montant_ttc:
+        montant_ht = None
     return {
         "date": d.get("date"),
         "fournisseur": (d.get("fournisseur") or "INCONNU").upper(),
-        "montant_ttc": _nombre(d.get("montant_ttc")),
-        "montant_ht": _nombre(d.get("montant_ht")),
+        "montant_ttc": montant_ttc,
+        "montant_ht": montant_ht,
         "tva": _nombre(d.get("tva")),
         "type_depense": type_depense if type_depense in TYPES_DEPENSE else "Autre",
         "fichier": fichier.name,
@@ -120,3 +126,4 @@ def extraire_releve(cle, fichier):
         "solde_fin": _nombre(d.get("solde_fin")) or 0.0,
         "operations": operations,
     }
+    
