@@ -5,8 +5,8 @@ rien n'est consommé. Les dates sont au format AAAA-MM-JJ.
 """
 
 # Factures d'achat, telles que l'IA devrait les extraire.
-# GERVAIS et AIR LIQUIDE sont importées deux fois exprès : l'app doit
-# détecter ces doublons. La facture SNCF n'indique ni HT ni TVA :
+# GERVAIS et AIR LIQUIDE sont importées deux fois dans le cahier des charges : l'app
+# retire ces doublons au chargement. La facture SNCF n'indique ni HT ni TVA :
 # ces valeurs sont donc à None (null), on ne les invente pas.
 FACTURES_DEMO = [
     {"date": "2019-03-12", "fournisseur": "TOTAL", "montant_ttc": 78.28,
@@ -84,3 +84,15 @@ RELEVE_BANCAIRE_DEMO = {
          "credit": None, "type_operation": "FOURNISSEUR"},
     ],
 }
+
+# Factures de vente d'exemple, inventées pour la démo : le cahier des charges ne
+# prévoit pas de ventes. BAT MAN est retrouvée en banque (encaissement du 2019-03-02),
+# WONDER WOMAN n'est pas encaissée, et l'encaissement de SPIDER MAN n'a pas de facture.
+VENTES_DEMO = [
+    {"date": "2019-03-01", "client": "BAT MAN", "montant_ttc": 1200.00,
+     "montant_ht": 1000.00, "tva": 200.00, "numero_facture": "FA-2019-001",
+     "fichier": "Facture FA-2019-001.pdf"},
+    {"date": "2019-06-15", "client": "WONDER WOMAN", "montant_ttc": 960.00,
+     "montant_ht": 800.00, "tva": 160.00, "numero_facture": "FA-2019-002",
+     "fichier": "Facture FA-2019-002.pdf"},
+]
